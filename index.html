@@ -1037,13 +1037,19 @@
   // Hide nav on scroll down, reveal on scroll up
   (function () {
     const navEl = document.querySelector('nav');
-    let lastY = window.scrollY;
+    // Robust scroll position: works whether <html> or <body> is the scroller
+    // (mobile browsers make <body> the scroller when overflow-x is hidden).
+    const scrollTop = function () {
+      return (document.scrollingElement || document.documentElement).scrollTop
+             || window.pageYOffset || 0;
+    };
+    let lastY = scrollTop();
     let ticking = false;
     window.addEventListener('scroll', function () {
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(function () {
-        const y = window.scrollY;
+        const y = scrollTop();
         const menuOpen = document.getElementById('navLinks').classList.contains('open');
         if (Math.abs(y - lastY) > 6 && !menuOpen) {
           if (y > lastY && y > 140) {
