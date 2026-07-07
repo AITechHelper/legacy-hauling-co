@@ -64,7 +64,9 @@
     height: 70px;
     border-bottom: 2px solid var(--gold);
     box-shadow: 0 2px 24px rgba(0,0,0,0.6), 0 0 18px rgba(255,182,18,0.12);
+    transition: transform 0.35s ease;
   }
+  nav.nav-hidden { transform: translateY(-105%); }
 
   .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
   .nav-logo img {
@@ -1032,6 +1034,30 @@
 </footer>
 
 <script>
+  // Hide nav on scroll down, reveal on scroll up
+  (function () {
+    const navEl = document.querySelector('nav');
+    let lastY = window.scrollY;
+    let ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        const y = window.scrollY;
+        const menuOpen = document.getElementById('navLinks').classList.contains('open');
+        if (Math.abs(y - lastY) > 6 && !menuOpen) {
+          if (y > lastY && y > 140) {
+            navEl.classList.add('nav-hidden');
+          } else {
+            navEl.classList.remove('nav-hidden');
+          }
+          lastY = y;
+        }
+        ticking = false;
+      });
+    }, { passive: true });
+  })();
+
   function toggleMenu() {
     const links = document.getElementById('navLinks');
     const btn = document.getElementById('navToggle');
