@@ -107,6 +107,24 @@
     transform: translateY(-1px);
   }
 
+  /* ─── MOBILE MENU TOGGLE ─── */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px; height: 44px;
+    background: none; border: none; cursor: pointer; padding: 8px;
+  }
+  .nav-toggle span {
+    display: block; height: 2.5px; width: 100%;
+    background: var(--gold); border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
   /* ─── HERO ─── */
   .hero {
     background:
@@ -522,7 +540,27 @@
   }
   @media (max-width: 768px) {
     nav { padding: 0 16px; }
-    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 70px; left: 0; right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: #0A0C0E;
+      border-bottom: 2px solid var(--gold);
+      box-shadow: 0 16px 30px rgba(0,0,0,0.55);
+      padding: 6px 0 14px;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block; padding: 15px 22px; font-size: 1.05rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-links .nav-cta {
+      margin: 12px 22px 4px; text-align: center; padding: 14px 22px;
+    }
     .nav-logo-text { font-size: 1.1rem; }
     .nav-logo img { width: 36px; height: 36px; }
 
@@ -567,13 +605,16 @@
     <img src="img/logo.png" alt="Legacy Hauling Co Logo"/>
     <span class="nav-logo-text">LEGACY <span>HAULING&nbsp;CO</span></span>
   </a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#work">Our Work</a></li>
-    <li><a href="#area">Service Area</a></li>
-    <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="tel:+19186999790" class="nav-cta">📞 (918) 699-9790</a></li>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services" onclick="closeMenu()">Services</a></li>
+    <li><a href="#work" onclick="closeMenu()">Our Work</a></li>
+    <li><a href="#area" onclick="closeMenu()">Service Area</a></li>
+    <li><a href="#reviews" onclick="closeMenu()">Reviews</a></li>
+    <li><a href="#faq" onclick="closeMenu()">FAQ</a></li>
+    <li><a href="tel:+19186999790" class="nav-cta" onclick="closeMenu()">📞 (918) 699-9790</a></li>
   </ul>
 </nav>
 
@@ -991,6 +1032,19 @@
 </footer>
 
 <script>
+  function toggleMenu() {
+    const links = document.getElementById('navLinks');
+    const btn = document.getElementById('navToggle');
+    const open = links.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+  }
+  function closeMenu() {
+    document.getElementById('navLinks').classList.remove('open');
+    const btn = document.getElementById('navToggle');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
   function toggleFaq(el) {
     const answer = el.nextElementSibling;
     const isOpen = el.classList.contains('open');
