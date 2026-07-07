@@ -546,8 +546,9 @@
     .why-layout, .legacy-layout, .area-layout, .contact-layout { grid-template-columns: 1fr; gap: 40px; }
     .legacy-photo { max-width: 460px; }
   }
-  @media (max-width: 768px) {
-    nav { padding: 0 16px; }
+  /* Switch to hamburger menu before the desktop nav starts to wrap */
+  @media (max-width: 1000px) {
+    nav { padding: 0 20px; }
     .nav-toggle { display: flex; }
     .nav-links {
       display: none;
@@ -569,6 +570,10 @@
     .nav-links .nav-cta {
       margin: 12px 22px 4px; text-align: center; padding: 14px 22px;
     }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 16px; }
     .nav-logo-text { font-size: 1.1rem; }
     .nav-logo img { width: 36px; height: 36px; }
 
